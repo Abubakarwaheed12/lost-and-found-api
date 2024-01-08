@@ -1,0 +1,3 @@
+Emails_Content = {
+    'Welcome': ""
+}
