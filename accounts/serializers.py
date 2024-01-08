@@ -116,6 +116,8 @@ class ForgotPasswordSerializer(serializers.ModelSerializer):
         email = self.validated_data.get("email")
         user = User.objects.get(email=email)
 
+        self.context['request'].session['reset_email'] = email
+
         # Generate a random 4-digit PIN code
         pin_code = ''.join(random.choices(string.digits, k=4))
         user.pin_code = pin_code

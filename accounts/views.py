@@ -75,7 +75,7 @@ logger = logging.getLogger(__name__)
 
 class OTPVerification(APIView):
     def post(self, request, format=None):
-        email = request.data.get('email')
+        email = request.session.get('reset_email')
         otp = request.data.get('otp')
 
         try:
@@ -86,7 +86,6 @@ class OTPVerification(APIView):
             raise serializers.ValidationError("User not found.")
 
 
-        request.session['verified_user_email'] = email
 
         return Response({"message": "OTP verified successfully."}, status=status.HTTP_200_OK)
 
