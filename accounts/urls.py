@@ -17,5 +17,13 @@ urlpatterns = [
     path("refresh/", TokenRefreshSlidingView.as_view(), name="refresh"),
     path("reset/", ResetPassword.as_view(), name="reset"),
     path("verify/", OTPVerification.as_view(), name="verify"),
+
 ] + router.urls
 
+
+
+
+
+
+
+# add testing 
