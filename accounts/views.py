@@ -1,6 +1,4 @@
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str
-from rest_framework_simplejwt.tokens import UntypedToken
+from rest_framework import generics
 from django.contrib.auth import get_user_model
 from django.http import Http404
 from rest_framework.viewsets import GenericViewSet
@@ -8,13 +6,10 @@ from rest_framework import mixins
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.views import APIView
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import serializers
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
-
-from rest_framework_simplejwt.views import TokenVerifyView
-from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework_simplejwt.authentication import JWTAuthentication
 import logging
 
 logger = logging.getLogger(__name__)
@@ -112,3 +107,12 @@ class ResetPassword(APIView):
             return Response({"msg": "Password changed successfully."}, status=status.HTTP_200_OK)
         else:
             return Response({"error": "Passwords do not match."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserProfileUpdateView(generics.UpdateAPIView):
+    serializer_class = UserProfileSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user

@@ -1,5 +1,3 @@
-
-
 import string
 import threading
 from rest_framework import serializers
@@ -68,7 +66,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(read_only=True)
     class Meta:
         model = User
-        fields = ("id", "email")
+        fields = ('id', 'email', 'username', 'profile_image')
     
 
 class UserChangePasswordSerializer(serializers.Serializer):
@@ -138,7 +136,7 @@ class ForgotPasswordSerializer(serializers.ModelSerializer):
 class ResetPasswordSerializer(serializers.Serializer):
     password = serializers.CharField()
     password1 = serializers.CharField()
-    otp = serializers.CharField()  # Add OTP field
+    otp = serializers.CharField()  
 
     class Meta:
         fields = ("password", "password1", "otp")
@@ -148,7 +146,6 @@ class ResetPasswordSerializer(serializers.Serializer):
         password1 = attrs.get("password1")
         otp = attrs.get("otp")
 
-        # Validate that password and password1 match
         if password != password1:
             raise serializers.ValidationError("Both Passwords Should be the same.")
 
@@ -163,3 +160,4 @@ class ResetPasswordSerializer(serializers.Serializer):
         user.set_password(self.validated_data['password'])
         user.save()
         return user
+
